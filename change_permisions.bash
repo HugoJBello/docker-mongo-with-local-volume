@@ -1,0 +1,1 @@
+docker run -d -v data/db:/data/db -p 27017:27017 --user 999 mongo:latest

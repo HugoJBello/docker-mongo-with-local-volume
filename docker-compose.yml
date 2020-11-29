@@ -1,0 +1,32 @@
+version: '3.7'
+
+
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        hostname: mongodb
+        user: root
+        volumes:
+            - ./docker/mongodb/mongod.conf:/etc/mongod.conf
+            - ./docker/mongodb/initdb.d/:/docker-entrypoint-initdb.d/
+            - ./docker/mongodb/data/db/:/data/db/
+            - ./docker/mongodb/data/log/:/var/log/mongodb/
+        #env_file:
+            #- .env
+        #environment:
+            #MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+            #MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+            #MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+        ports:
+            - "27017:27017"
+        command:
+        - /bin/chown
+        - -R
+        - "999"  # or whatever the mongo UID is, use string "1000" not 1000 due to yaml
+        - /data/db
+        command: ["-f", "/etc/mongod.conf"]
+        network_mode: "host"
+        restart: always
+
+
